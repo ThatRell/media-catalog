@@ -31,18 +31,18 @@ func main() {
 	// Creates a new client and connects to the server
 	client, err := mongo.Connect(context.TODO(), opts)
 	if err != nil {
-		panic(err)
+		log.Fatalf("error connecting to mongo: %v", err)
 	}
 	defer func() {
 		if err = client.Disconnect(context.TODO()); err != nil {
-			panic(err)
+			log.Fatalf("error disconnecting to mongo: %v", err)
 		}
 	}()
 
 	// Sends a ping to confirm a successful connection
 	var result bson.M
 	if err := client.Database("admin").RunCommand(context.TODO(), bson.D{{"ping", 1}}).Decode(&result); err != nil {
-		panic(err)
+		log.Fatalf("error pinging mongo: %v", err)
 	}
 	fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
 
@@ -55,6 +55,32 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
+	})
+
+	// POST add new media
+	// GET retrieve all media
+	// GET retive media by id
+	// PUT update media with id
+	// DELETE delete media with id
+
+	r.POST("/media", func(c *gin.Context) {
+
+	})
+
+	r.GET("/media", func(c *gin.Context) {
+
+	})
+
+	r.GET("/media/:id", func(c *gin.Context) {
+		id := c.Param("id")
+	})
+
+	r.PUT("/media/:id", func(c *gin.Context) {
+		id := c.Param("id")
+	})
+
+	r.DELETE("/media/:id", func(c *gin.Context) {
+		id := c.Param("id")
 	})
 
 	// Start server on port 8080 (default)
